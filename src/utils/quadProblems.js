@@ -23,6 +23,28 @@ function shuffle(arr) {
   return res;
 }
 
+/**
+ * Guarantees exactly 4 unique options including the correct answer.
+ */
+function ensureFourDistinctOptions(correct, candidateDistractors, fallbackGenerator) {
+  const set = new Set([String(correct)]);
+  for (const d of candidateDistractors) {
+    if (d !== undefined && d !== null && String(d).trim() !== '') {
+      set.add(String(d));
+      if (set.size === 4) break;
+    }
+  }
+  let attempt = 1;
+  while (set.size < 4 && attempt <= 50) {
+    const fallback = fallbackGenerator(attempt);
+    if (fallback !== undefined && fallback !== null && String(fallback).trim() !== '') {
+      set.add(String(fallback));
+    }
+    attempt++;
+  }
+  return shuffle(Array.from(set));
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // WORLD 0: Identify Special Quadrilaterals
 // ─────────────────────────────────────────────────────────────────────────────
@@ -79,7 +101,11 @@ export function generateIdentifyProblem(seed = 0) {
   ];
 
   const item = types[seed % types.length];
-  const options = shuffle([item.correct, ...item.distractors]);
+  const options = ensureFourDistinctOptions(
+    item.correct,
+    item.distractors,
+    (i) => ["Parallelogram", "Rectangle", "Rhombus", "Square", "Trapezium", "Kite"][i % 6]
+  );
 
   return {
     category: "SPECIES IDENTIFICATION",
@@ -103,26 +129,26 @@ export function generateIdentifyProblem(seed = 0) {
 // WORLD 1: Angle Sum of Quadrilateral (360°)
 // ─────────────────────────────────────────────────────────────────────────────
 export function generateAngleSumProblem(seed = 0) {
-  // 3 angles given, find the 4th
-  const a1 = randInt(65, 115);
-  const a2 = randInt(70, 120);
-  const a3 = randInt(60, 110);
+  const a1 = 60 + ((seed * 7) % 55);
+  const a2 = 70 + ((seed * 11) % 50);
+  const a3 = 65 + ((seed * 13) % 45);
   const a4 = 360 - (a1 + a2 + a3);
 
   const correct = `${a4}°`;
-  const distractor1 = `${360 - a4}°`; // Gave sum of 3 angles instead
-  const distractor2 = `${180 - (a1 + a2 - 90)}°`; // Confused with 180°
+  const distractor1 = `${360 - a4}°`;
+  const distractor2 = `${Math.abs(180 - a1)}°`;
   const distractor3 = `${a4 + 10}°`;
 
-  const options = shuffle(Array.from(new Set([correct, distractor1, `${Math.abs(180 - a1)}°`, distractor3])).slice(0, 4));
-  while (options.length < 4) {
-    options.push(`${a4 - 15}°`);
-  }
+  const options = ensureFourDistinctOptions(
+    correct,
+    [distractor1, distractor2, distractor3],
+    (i) => `${a4 + i * 15}°`
+  );
 
   return {
     category: "ANGLE SUM 360°",
     questionText: `Three interior angles of a quadrilateral savanna zone are ${a1}°, ${a2}°, and ${a3}°. Find the fourth angle.`,
-    options: shuffle(options),
+    options,
     correctAnswer: correct,
     explanation: `The sum of interior angles in any quadrilateral is 360°. Fourth angle = 360° − (${a1}° + ${a2}° + ${a3}°) = 360° − ${a1 + a2 + a3}° = ${a4}°. (Reason: ${REASONS['angle-sum-quadrilateral']})`,
     hint1: "What is the total sum of all four interior angles in any quadrilateral?",
@@ -146,7 +172,7 @@ export function generateAnglePropertiesProblem(seed = 0) {
   const shapeKind = seed % 3; // 0: parallelogram, 1: trapezium, 2: kite
   
   if (shapeKind === 0) {
-    const angleA = randInt(55, 80);
+    const angleA = 55 + (seed % 25);
     const angleB = 180 - angleA;
     const askAdjacent = seed % 2 === 0;
 
@@ -155,7 +181,11 @@ export function generateAnglePropertiesProblem(seed = 0) {
     const correct = `${targetAngle}°`;
     const distractor = askAdjacent ? `${angleA}°` : `${angleB}°`;
 
-    const options = shuffle([correct, distractor, `${180 - targetAngle + 10}°`, `${targetAngle - 10}°`]);
+    const options = ensureFourDistinctOptions(
+      correct,
+      [distractor, `${180 - targetAngle + 10}°`, `${targetAngle - 10}°`],
+      (i) => `${targetAngle + i * 12}°`
+    );
 
     return {
       category: "PARALLELOGRAM ANGLES",
@@ -180,10 +210,14 @@ export function generateAnglePropertiesProblem(seed = 0) {
     };
   } else if (shapeKind === 1) {
     // Trapezium
-    const baseAngle = randInt(60, 85);
+    const baseAngle = 60 + (seed % 25);
     const coInterior = 180 - baseAngle;
     const correct = `${coInterior}°`;
-    const options = shuffle([correct, `${baseAngle}°`, `${coInterior - 15}°`, `${360 - baseAngle}°`]);
+    const options = ensureFourDistinctOptions(
+      correct,
+      [`${baseAngle}°`, `${coInterior - 15}°`, `${360 - baseAngle}°`],
+      (i) => `${coInterior + i * 14}°`
+    );
 
     return {
       category: "TRAPEZIUM ANGLES",
@@ -206,12 +240,16 @@ export function generateAnglePropertiesProblem(seed = 0) {
     };
   } else {
     // Kite
-    const angleA = randInt(70, 95);
-    const angleC = randInt(40, 60);
+    const angleA = 70 + (seed % 25);
+    const angleC = 40 + (seed % 20);
     const remaining = 360 - (angleA + angleC);
     const angleB = Math.round(remaining / 2);
     const correct = `${angleB}°`;
-    const options = shuffle([correct, `${remaining}°`, `${angleA}°`, `${180 - angleA}°`]);
+    const options = ensureFourDistinctOptions(
+      correct,
+      [`${remaining}°`, `${angleA}°`, `${180 - angleA}°`],
+      (i) => `${angleB + i * 15}°`
+    );
 
     return {
       category: "KITE ANGLES",
@@ -242,13 +280,17 @@ export function generateSidePerimeterProblem(seed = 0) {
   const kind = seed % 3; // 0: rhombus side, 1: parallelogram perimeter, 2: kite perimeter
   
   if (kind === 0) {
-    const side = randInt(6, 16);
+    const side = 6 + (seed % 12);
     const perim = side * 4;
     const askSide = seed % 2 === 0;
 
     if (askSide) {
       const correct = `${side} cm`;
-      const options = shuffle([correct, `${perim / 2} cm`, `${side * 2} cm`, `${side - 2} cm`]);
+      const options = ensureFourDistinctOptions(
+        correct,
+        [`${side * 2} cm`, `${side + 4} cm`, `${Math.max(2, side - 3)} cm`],
+        (i) => `${side + i * 5} cm`
+      );
       return {
         category: "RHOMBUS SIDES",
         questionText: `A rhombus animal enclosure has a perimeter of ${perim} cm. Find the length of each side.`,
@@ -266,7 +308,11 @@ export function generateSidePerimeterProblem(seed = 0) {
       };
     } else {
       const correct = `${perim} cm`;
-      const options = shuffle([correct, `${side * 2} cm`, `${side * 3} cm`, `${perim + 8} cm`]);
+      const options = ensureFourDistinctOptions(
+        correct,
+        [`${side * 2} cm`, `${side * 3} cm`, `${perim + 8} cm`],
+        (i) => `${perim + i * 6} cm`
+      );
       return {
         category: "RHOMBUS PERIMETER",
         questionText: `Each side of a rhombus habitat fence measures ${side} cm. What is its total perimeter?`,
@@ -284,11 +330,15 @@ export function generateSidePerimeterProblem(seed = 0) {
       };
     }
   } else if (kind === 1) {
-    const a = randInt(7, 15);
-    const b = randInt(4, 9);
+    const a = 7 + (seed % 9);
+    const b = 4 + (seed % 5);
     const perim = 2 * (a + b);
     const correct = `${perim} cm`;
-    const options = shuffle([correct, `${a + b} cm`, `${2 * a + b} cm`, `${perim + 4} cm`]);
+    const options = ensureFourDistinctOptions(
+      correct,
+      [`${a + b} cm`, `${2 * a + b} cm`, `${perim + 6} cm`],
+      (i) => `${perim + i * 8} cm`
+    );
 
     return {
       category: "PARALLELOGRAM PERIMETER",
@@ -307,11 +357,15 @@ export function generateSidePerimeterProblem(seed = 0) {
     };
   } else {
     // Kite perimeter
-    const a = randInt(6, 12);
-    const b = randInt(13, 20);
+    const a = 5 + (seed % 7);
+    const b = 12 + (seed % 8);
     const perim = 2 * (a + b);
     const correct = `${perim} cm`;
-    const options = shuffle([correct, `${a + b} cm`, `${a * 2 + b} cm`, `${perim - 6} cm`]);
+    const options = ensureFourDistinctOptions(
+      correct,
+      [`${a + b} cm`, `${a * 2 + b} cm`, `${perim + 6} cm`],
+      (i) => `${perim + i * 8} cm`
+    );
 
     return {
       category: "KITE PERIMETER",
@@ -338,13 +392,17 @@ export function generateDiagonalProblem(seed = 0) {
   const kind = seed % 3; // 0: rectangle diagonals, 1: rhombus diagonals 90°, 2: parallelogram diagonals bisect
   
   if (kind === 0) {
-    const half = randInt(6, 14);
+    const half = 6 + (seed % 8);
     const total = half * 2;
     const askHalf = seed % 2 === 0;
 
     if (askHalf) {
       const correct = `${half} cm`;
-      const options = shuffle([correct, `${total} cm`, `${half * 3} cm`, `${half + 2} cm`]);
+      const options = ensureFourDistinctOptions(
+        correct,
+        [`${total} cm`, `${half * 3} cm`, `${half + 3} cm`],
+        (i) => `${half + i * 4} cm`
+      );
       return {
         category: "RECTANGLE DIAGONALS",
         questionText: `The diagonals of rectangle PQRS meet at X. If diagonal PR = ${total} cm, find the length of segment QX.`,
@@ -362,7 +420,11 @@ export function generateDiagonalProblem(seed = 0) {
       };
     } else {
       const correct = `${total} cm`;
-      const options = shuffle([correct, `${half} cm`, `${total + 4} cm`, `${half * 3} cm`]);
+      const options = ensureFourDistinctOptions(
+        correct,
+        [`${half} cm`, `${total + 4} cm`, `${half * 3} cm`],
+        (i) => `${total + i * 6} cm`
+      );
       return {
         category: "RECTANGLE DIAGONALS",
         questionText: `The diagonals of rectangle ABCD intersect at center P. If segment AP = ${half} cm, find diagonal BD.`,
@@ -381,7 +443,7 @@ export function generateDiagonalProblem(seed = 0) {
     }
   } else if (kind === 1) {
     const correct = "90°";
-    const options = shuffle(["90°", "60°", "45°", "180°"]);
+    const options = ["90°", "60°", "45°", "180°"];
     return {
       category: "RHOMBUS DIAGONALS",
       questionText: "The diagonals of a rhombus ABCD intersect at point X. What is the measure of angle AXB?",
@@ -399,9 +461,13 @@ export function generateDiagonalProblem(seed = 0) {
     };
   } else {
     // Parallelogram bisecting
-    const len = randInt(5, 12);
+    const len = 5 + (seed % 8);
     const correct = `${len} cm`;
-    const options = shuffle([correct, `${len * 2} cm`, `${len + 3} cm`, `${Math.max(2, len - 2)} cm`]);
+    const options = ensureFourDistinctOptions(
+      correct,
+      [`${len * 2} cm`, `${len + 3} cm`, `${Math.max(2, len - 2)} cm`],
+      (i) => `${len + i * 4} cm`
+    );
     return {
       category: "PARALLELOGRAM DIAGONALS",
       questionText: `In parallelogram ABCD, the diagonals meet at point M. If AM = ${len} cm, find the length of segment MC.`,
@@ -458,7 +524,11 @@ export function generateClassificationProblem(seed = 0) {
   ];
 
   const item = problems[seed % problems.length];
-  const options = shuffle([item.correct, ...item.distractors]);
+  const options = ensureFourDistinctOptions(
+    item.correct,
+    item.distractors,
+    (i) => ["Parallelogram", "Rectangle", "Rhombus", "Square", "Trapezium", "Kite"][i % 6]
+  );
 
   return {
     category: "MOST SPECIFIC CLASSIFICATION",
@@ -519,7 +589,11 @@ export function generateHierarchyProblem(seed = 0) {
   ];
 
   const item = problems[seed % problems.length];
-  const options = shuffle([item.correct, ...item.distractors]);
+  const options = ensureFourDistinctOptions(
+    item.correct,
+    item.distractors,
+    (i) => `Option ${i}`
+  );
 
   return {
     category: "INCLUSION HIERARCHY",
@@ -541,34 +615,28 @@ export function generateAlgebraicProblem(seed = 0) {
   const kind = seed % 2; // 0: adjacent angles sum to 180°, 1: opposite angles equal
 
   if (kind === 0) {
-    // (a*x + c) + (b*x + d) = 180
-    // Let x = randInt(15, 35)
-    const x = pick([15, 20, 25, 30, 35]);
-    const a = randInt(2, 3);
-    const b = randInt(2, 3);
-    // (a + b)*x + c + d = 180
+    const xValues = [15, 20, 25, 30, 35];
+    const x = xValues[seed % xValues.length];
+    const a = 2 + (seed % 2);
+    const b = 2 + ((seed + 1) % 2);
     const sumCoeff = a + b;
     const targetConst = 180 - sumCoeff * x;
     const c = Math.floor(targetConst / 2);
     const d = targetConst - c;
 
-    const angle1 = a * x + c;
-    const angle2 = b * x + d;
-
     const correct = `${x}`;
-    const options = shuffle([
+    const options = ensureFourDistinctOptions(
       correct,
-      `${Math.abs(Math.round((c - d) / (a - b || 1))) || x + 10}`, // Distractor: set equal
-      `${x - 5}`,
-      `${x + 10}`,
-    ]);
+      [`${x + 10}`, `${Math.max(5, x - 5)}`, `${x + 15}`],
+      (i) => `${x + i * 8}`
+    );
 
     return {
       category: "ALGEBRAIC ANGLES",
       questionText: `In parallelogram ABCD, angle A = (${a}x + ${c})° and adjacent angle B = (${b}x + ${d})°. Find the value of x.`,
       options,
       correctAnswer: correct,
-      explanation: `Adjacent angles in a parallelogram are co-interior between parallel lines, so they sum to 180°: (${a}x + ${c}) + (${b}x + ${d}) = 180° ⇒ ${sumCoeff}x + ${c + d} = 180° ⇒ ${sumCoeff}x = ${180 - (c + d)} ⇒ x = ${x}. (Angle A = ${angle1}°, Angle B = ${angle2}°).`,
+      explanation: `Adjacent angles in a parallelogram are co-interior between parallel lines, so they sum to 180°: (${a}x + ${c}) + (${b}x + ${d}) = 180° ⇒ ${sumCoeff}x + ${c + d} = 180° ⇒ ${sumCoeff}x = ${180 - (c + d)} ⇒ x = ${x}.`,
       hint1: "Adjacent angles of a parallelogram sum to 180° (co-interior).",
       hint2: `Set up the equation: (${a}x + ${c}) + (${b}x + ${d}) = 180.`,
       visual: "figure",
@@ -582,23 +650,27 @@ export function generateAlgebraicProblem(seed = 0) {
       },
     };
   } else {
-    // Opposite angles equal: (a*x + c) = (b*x - d)
-    const x = pick([18, 22, 25, 30]);
+    // Opposite angles equal: (3x - c) = (2x + d) => x = c + d
+    const xValues = [18, 22, 25, 30];
+    const x = xValues[seed % xValues.length];
     const a = 3;
     const b = 2;
-    // 3x - c = 2x + d => x = c + d
-    const c = randInt(10, 25);
+    const c = 10 + (seed % 8);
     const d = x - c;
 
     const correct = `${x}`;
-    const options = shuffle([correct, `${x + 5}`, `${x - 6}`, `${Math.round((180 - c) / 5)}`]);
+    const options = ensureFourDistinctOptions(
+      correct,
+      [`${x + 5}`, `${Math.max(5, x - 6)}`, `${x + 12}`],
+      (i) => `${x + i * 7}`
+    );
 
     return {
       category: "ALGEBRAIC ANGLES",
       questionText: `In parallelogram ABCD, opposite angles are angle A = (${a}x − ${c})° and angle C = (${b}x + ${d})°. Find the value of x.`,
       options,
       correctAnswer: correct,
-      explanation: `Opposite angles of a parallelogram are equal: ${a}x − ${c} = ${b}x + ${d} ⇒ ${a}x − ${b}x = ${d} + ${c} ⇒ x = ${x}. (Both angles equal ${a * x - c}°).`,
+      explanation: `Opposite angles of a parallelogram are equal: ${a}x − ${c} = ${b}x + ${d} ⇒ ${a}x − ${b}x = ${d} + ${c} ⇒ x = ${x}.`,
       hint1: "Opposite angles in a parallelogram are equal.",
       hint2: `Set them equal: ${a}x − ${c} = ${b}x + ${d}, and solve for x.`,
       visual: "figure",
@@ -668,7 +740,11 @@ export function generateMultiStepReasonProblem(seed = 0) {
   ];
 
   const item = problems[seed % problems.length];
-  const options = shuffle([item.correct, ...item.distractors]);
+  const options = ensureFourDistinctOptions(
+    item.correct,
+    item.distractors,
+    (i) => `Alternative Step Reasoning ${i}`
+  );
 
   return {
     category: "MULTI-STEP WITH REASONS",
@@ -680,6 +756,7 @@ export function generateMultiStepReasonProblem(seed = 0) {
     hint2: "Every claim requires a geometric justification.",
     visual: "step-reasons",
     visualData: { steps: item.steps },
+    steps: item.steps,
   };
 }
 

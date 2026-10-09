@@ -2,13 +2,16 @@
 import React, { useMemo } from 'react';
 import './FloatingNumbers.css';
 
-const MONEY_SYMBOLS = ['🪙', '💵', '💰', '🏷️', '🐷', '💲', '🛒', '🛍️', '💱', '✨', '🍎', '🧁', '⭐', '5¢', '10¢', '20¢', '50¢', '$1', '$2', '$5'];
+const SAVANNA_GEOMETRY_SYMBOLS = [
+  '🦒', '📐', '📏', '🔷', '🟩', '🦏', '✨', '🌿', '🪵', '🧭',
+  '🐆', '🐊', '🐍', '🦜', '360°', '90°', '180°', '∥', '⊥', 'x°'
+];
 
 export default function FloatingNumbers() {
   const items = useMemo(() => {
     return Array.from({ length: 18 }, (_, i) => ({
       id: i,
-      symbol: MONEY_SYMBOLS[i % MONEY_SYMBOLS.length],
+      symbol: SAVANNA_GEOMETRY_SYMBOLS[i % SAVANNA_GEOMETRY_SYMBOLS.length],
       left: `${(i * 5.6 + 3) % 94}%`,
       delay: `${(i * 1.3) % 15}s`,
       duration: `${18 + (i % 5) * 4}s`,
