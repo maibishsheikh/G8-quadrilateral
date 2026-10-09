@@ -51,7 +51,7 @@ export default function BossBattleModal({ boss, questions, onWin, onClose, audio
           </div>
           <h2 className="boss-title">{boss.name}</h2>
           <p className="boss-desc">
-            Answer {questions.length} money questions correctly to defeat the boss!
+            Answer {questions.length} quadrilateral questions correctly to defeat the boss!
           </p>
           <div className="boss-lives-preview">
             Lives: {'❤️'.repeat(3)}
