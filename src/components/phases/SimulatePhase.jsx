@@ -1,18 +1,18 @@
 // src/components/phases/SimulatePhase.jsx
 import React, { useEffect, useRef } from 'react';
 import './SimulatePhase.css';
-import CoinRegisterStation from '../simulations/CoinRegisterStation.jsx';
-import PriceScannerStation from '../simulations/PriceScannerStation.jsx';
-import ChangeMakerStation from '../simulations/ChangeMakerStation.jsx';
-import ReceiptDetectiveStation from '../simulations/ReceiptDetectiveStation.jsx';
+import ShapeShifterLab from '../simulations/ShapeShifterLab.jsx';
+import BuildToSpec from '../simulations/BuildToSpec.jsx';
+import FileTheEntry from '../simulations/FileTheEntry.jsx';
+import TheMislabelledExhibit from '../simulations/TheMislabelledExhibit.jsx';
 import { useAudio } from '../../hooks/useAudio.js';
 import { simStationIntro } from '../../utils/narration.js';
 
 const STATIONS = [
-  { id: 0, label: 'A', name: 'Coin Register',     icon: '🪙', desc: 'Build exact target amounts' },
-  { id: 1, label: 'B', name: 'Market Scanner',    icon: '🛒', desc: 'Scan items & calculate totals' },
-  { id: 2, label: 'C', name: 'Change Maker',      icon: '🔄', desc: 'Calculate & dispense change' },
-  { id: 3, label: 'D', name: 'Receipt Detective', icon: '🔍', desc: 'Spot & fix receipt errors' },
+  { id: 0, label: 'A', name: 'Shape Shifter Lab',   icon: '🧪', desc: 'Reshape diagonals & discover species' },
+  { id: 1, label: 'B', name: 'Build to Spec',        icon: '📐', desc: 'Build target quadrilaterals' },
+  { id: 2, label: 'C', name: 'File the Entry',       icon: '📋', desc: 'Verify, solve & place on tree' },
+  { id: 3, label: 'D', name: 'Mislabelled Exhibit',  icon: '🔍', desc: 'Spot misconceptions & fix plaques' },
 ];
 
 export default function SimulatePhase({ state, dispatch }) {
@@ -84,10 +84,10 @@ export default function SimulatePhase({ state, dispatch }) {
 
         {/* Station Content Area */}
         <div className="sim-station-area" role="tabpanel" key={s}>
-          {s === 0 && <CoinRegisterStation onComplete={() => handleStationComplete(0)} audioEnabled={state?.audioEnabled} />}
-          {s === 1 && <PriceScannerStation onComplete={() => handleStationComplete(1)} audioEnabled={state?.audioEnabled} />}
-          {s === 2 && <ChangeMakerStation onComplete={() => handleStationComplete(2)} audioEnabled={state?.audioEnabled} />}
-          {s === 3 && <ReceiptDetectiveStation onComplete={() => handleStationComplete(3)} audioEnabled={state?.audioEnabled} />}
+          {s === 0 && <ShapeShifterLab onComplete={() => handleStationComplete(0)} audioEnabled={state?.audioEnabled} />}
+          {s === 1 && <BuildToSpec onComplete={() => handleStationComplete(1)} audioEnabled={state?.audioEnabled} />}
+          {s === 2 && <FileTheEntry onComplete={() => handleStationComplete(2)} audioEnabled={state?.audioEnabled} />}
+          {s === 3 && <TheMislabelledExhibit onComplete={() => handleStationComplete(3)} audioEnabled={state?.audioEnabled} />}
         </div>
 
         {/* Footer Navigation */}
@@ -119,7 +119,7 @@ export default function SimulatePhase({ state, dispatch }) {
                 dispatch({ type: 'SET_PHASE', payload: 'play' });
               }}
             >
-              Practice! 🎮
+              Enter Practice Worlds 🎮
             </button>
           ) : (
             <button className="btn btn-outline btn-sm" disabled>

@@ -11,29 +11,29 @@ import questionBank from '../../data/questionBank.js';
 
 const REFLECT_QUESTIONS = [
   {
-    q: "1. How many cents are in a one-dollar ($1.00) coin?",
+    q: "1. Is a square also classified as a rectangle and a rhombus?",
     options: [
-      "100 cents",
-      "50 cents",
-      "10 cents",
+      "Yes! It inherits 4 right angles (rectangle) and 4 equal sides (rhombus).",
+      "No! A square is strictly its own species and nothing else.",
+      "Only when tilted by 45 degrees.",
     ],
     correct: 0,
   },
   {
-    q: "2. Oliver pays with a $1.00 coin for an 85¢ muffin. How is his change calculated?",
+    q: "2. Which statement correctly distinguishes the diagonals of special quadrilaterals?",
     options: [
-      "Amount Paid − Price = $1.00 − 85¢ = 15¢",
-      "Add both numbers: $1.00 + 85¢ = $1.85",
-      "Change is always a fixed 50¢",
+      "Rectangles have equal diagonals; rhombuses have perpendicular diagonals.",
+      "Every parallelogram has equal and perpendicular diagonals.",
+      "A kite always has diagonals that bisect each other.",
     ],
     correct: 0,
   },
   {
-    q: "3. What is the golden rule when adding prices in dollars and cents?",
+    q: "3. If ABCD is a parallelogram and angle A = 70°, what is adjacent angle B?",
     options: [
-      "Keep dollars with dollars and cents with cents",
-      "Ignore the decimal points completely",
-      "Always subtract the smaller number",
+      "110°, because adjacent angles between parallel sides are co-interior (sum to 180°).",
+      "70°, because adjacent angles in a parallelogram are always equal.",
+      "140°, because adjacent angles are twice the corner angle.",
     ],
     correct: 0,
   },
@@ -86,9 +86,9 @@ export default function ReflectPhase({ state, dispatch }) {
       <div className="reflect-wrap">
         <div className="trophy-card glass-card anim-bounce-in">
           <div className="trophy-icon">🏆</div>
-          <h1 className="trophy-title headline">You're a Money Grand Master!</h1>
+          <h1 className="trophy-title headline">You're a Savanna Chief Ranger!</h1>
           <p className="trophy-sub subheadline" style={{ color: 'var(--gold)' }}>
-            Money, Coins &amp; Change Mastery Complete ✅
+            Quadrilaterals &amp; Geometric Reasoning Mastery Complete ✅
           </p>
 
           {/* Stats Breakdown */}
@@ -120,7 +120,7 @@ export default function ReflectPhase({ state, dispatch }) {
           {earnedBadges.length > 0 && (
             <div className="trophy-badges">
               <p className="label-text" style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '6px' }}>
-                Badges Unlocked
+                Savanna Ranger Badges Unlocked
               </p>
               <div className="badge-list">
                 {earnedBadges.map(b => (
@@ -153,16 +153,16 @@ export default function ReflectPhase({ state, dispatch }) {
     <div className="reflect-wrap">
       <div className="reflect-card glass-card anim-slide-up">
         <div className="reflect-header">
-          <span className="reflect-badge">📓 Learning Reflection &amp; Scorecard</span>
-          <h2 className="reflect-title subheadline">Reflect on Your Money Journey</h2>
+          <span className="reflect-badge">📓 Ranger Debrief &amp; Scorecard</span>
+          <h2 className="reflect-title subheadline">Reflect on Your QuadQuest Journey</h2>
         </div>
 
-        <Mascot mood="curious" message="Let's check your key takeaways and review your scorecard!" size="sm" />
+        <Mascot mood="curious" message="Let's debrief the headline misconceptions and review your ranger scorecard!" size="sm" />
 
         {/* Self-assessment Concept Check */}
         <div className="reflect-quiz-container">
           <p className="body-text" style={{ color: 'var(--gold)', fontWeight: 800 }}>
-            🧠 Money Concept Reflection Check:
+            🧠 Headline Misconceptions Check:
           </p>
           {REFLECT_QUESTIONS.map((qObj, qIdx) => (
             <div key={qIdx} className="reflect-q-item">
@@ -189,12 +189,12 @@ export default function ReflectPhase({ state, dispatch }) {
         {/* Journal Entry */}
         <div className="reflect-journal">
           <label className="reflect-label body-text" htmlFor="journal-input">
-            Write one key money rule or fact you mastered:
+            Which species were you most tempted to name by looks, and what feature settled it?
           </label>
           <textarea
             id="journal-input"
             className="reflect-textarea"
-            placeholder="e.g. 100 cents = $1.00, and Change = Amount Paid − Price!"
+            placeholder="e.g. I was tempted to call a thin rhombus a kite, but perpendicular bisecting diagonals proved it was a rhombus!"
             value={journal}
             onChange={e => setJournal(e.target.value)}
             rows={2}
@@ -204,9 +204,9 @@ export default function ReflectPhase({ state, dispatch }) {
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '6px' }}>
             <span style={{ fontSize: '0.8rem', color: '#a0a0b8', alignSelf: 'center' }}>Quick insert:</span>
             {[
-              '100 cents = $1.00',
-              'Change = Amount Paid − Price',
-              'Keep cents with cents and dollars with dollars',
+              'Perpendicular bisecting diagonals proved it was a rhombus, not just a kite!',
+              'A square is also a rectangle and a rhombus by feature inheritance.',
+              'Co-interior angles on parallel lines sum to 180°, never equal unless 90°.',
             ].map(ex => (
               <button
                 key={ex}
@@ -229,7 +229,7 @@ export default function ReflectPhase({ state, dispatch }) {
 
         <div className="reflect-actions">
           <button className="btn btn-primary btn-lg" onClick={handleSubmit}>
-            🌟 Submit Reflection &amp; View Trophy Scorecard!
+            🌟 Submit Debrief &amp; View Ranger Scorecard!
           </button>
         </div>
       </div>

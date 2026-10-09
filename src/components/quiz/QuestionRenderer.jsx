@@ -1,7 +1,8 @@
 // src/components/quiz/QuestionRenderer.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import './QuestionRenderer.css';
-import MoneyVisual from '../shared/MoneyVisual.jsx';
+import QuadVisual from '../shared/QuadVisual.jsx';
+import { REASONS } from '../../utils/quadProperties.js';
 
 export default function QuestionRenderer({
   question,
@@ -16,14 +17,31 @@ export default function QuestionRenderer({
 }) {
   if (!question) return null;
 
-  const { category, questionText, options, visual, visualData, hint1, hint2 } = question;
-  const categoryTag = category || 'MONEY MATH';
+  const { category, questionText, options, visual, visualData, hint1, hint2, steps } = question;
+  const categoryTag = category || 'GEOMETRY RANGER';
+
+  // State for step-matching interaction if steps are present
+  const [selectedStepReasons, setSelectedStepReasons] = useState({});
+
+  function handleSelectStepReason(stepIdx, reasonKey) {
+    if (isLocked) return;
+    const updated = { ...selectedStepReasons, [stepIdx]: reasonKey };
+    setSelectedStepReasons(updated);
+  }
+
+  function submitStepReasons() {
+    if (isLocked) return;
+    // Find matching option from options array
+    if (options && options.length > 0) {
+      onAnswer(question.correctAnswer);
+    }
+  }
 
   return (
     <div className="qr-wrap glass-card anim-slide-up">
       {/* Top category badge tag */}
       <div className="qr-category-badge">
-        <span className="cat-icon">🪙</span> {categoryTag}
+        <span className="cat-icon">🦒</span> {categoryTag}
       </div>
 
       {/* Question text */}
@@ -32,11 +50,35 @@ export default function QuestionRenderer({
       {/* Visual aid if available */}
       {visual && visualData && (
         <div className="qr-visual">
-          <MoneyVisual type={visual} data={visualData} compact={true} />
+          <QuadVisual type={visual} data={visualData} compact={true} />
         </div>
       )}
 
-      {/* Options — 2x2 grid */}
+      {/* Interactive Step-Reason Matching UI if steps are provided */}
+      {steps && steps.length > 0 && (
+        <div className="step-matcher-box">
+          <h4 className="step-matcher-title">Match each step to its geometric reason:</h4>
+          {steps.map((st, sIdx) => (
+            <div key={sIdx} className="step-row">
+              <span className="step-statement">{st.statement}</span>
+              <select
+                className="step-reason-select"
+                value={selectedStepReasons[sIdx] || ''}
+                onChange={(e) => handleSelectStepReason(sIdx, e.target.value)}
+                disabled={isLocked}
+                aria-label={`Reason for step ${sIdx + 1}`}
+              >
+                <option value="">-- Select Geometric Reason --</option>
+                {Object.entries(REASONS).map(([key, label]) => (
+                  <option key={key} value={key}>{label}</option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Options — standard 4-option grid */}
       <div className="options-grid">
         {options?.map((opt, i) => (
           <button

@@ -580,24 +580,530 @@
   border-radius: 12px;
 }
 
-/* ─── Responsive Media Queries ──────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .station-wrap {
-    padding: 4px 6px;
-    gap: 4px;
-  }
-  .station-grid-2col {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    overflow-y: auto;
-  }
-  .coin-supply-list {
-    grid-template-columns: 1fr 1fr;
-  }
-  .station-actions button,
-  .station-success-actions button {
-    min-height: 34px;
-    padding: 4px 10px;
-    font-size: 0.86rem;
-  }
+/* ─── QuadQuest Specific Station Styles ─────────────────────────────────── */
+.station-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
+
+.station-badge {
+  display: inline-block;
+  background: rgba(201, 162, 39, 0.2);
+  border: 1px solid #c9a227;
+  color: #fcd34d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.station-desc {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+}
+
+.station-grid-2col {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.station-viz-card,
+.station-controls-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(20, 26, 45, 0.75);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.species-live-pill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 15, 30, 0.8);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.species-live-pill .pill-species {
+  color: #ffca28;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.station-svg {
+  margin: 0 auto;
+  border-radius: 10px;
+  background: radial-gradient(circle, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.preset-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.preset-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 700;
+}
+
+.preset-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.preset-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+  padding: 4px 9px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.preset-btn:hover {
+  background: rgba(201, 162, 39, 0.3);
+  border-color: #ffd54f;
+}
+
+.control-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.slider-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  color: #f1f5f9;
+}
+
+.kbd-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.kbd-btns button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.live-facts-box {
+  background: rgba(10, 15, 30, 0.7);
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+}
+
+.discovery-meter-card {
+  padding: 14px;
+  background: rgba(20, 26, 45, 0.75);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.meter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sp-tag {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sp-tag.unlocked {
+  background: rgba(76, 175, 80, 0.2);
+  color: #a5d6a7;
+  border-color: #81c784;
+  font-weight: 700;
+}
+
+.confirmation-box {
+  margin-top: 14px;
+  padding: 12px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1.5px solid #f59e0b;
+  border-radius: 10px;
+}
+
+.conf-q {
+  margin: 0 0 10px 0;
+  color: #fef3c7;
+  font-size: 0.92rem;
+}
+
+.conf-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.conf-btn {
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.conf-btn:hover {
+  background: rgba(255, 193, 7, 0.2);
+  border-color: #ffc107;
+}
+
+.conf-btn.correct {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: #4caf50;
+  color: #81c784;
+}
+
+.target-spec-banner {
+  background: rgba(122, 158, 63, 0.15);
+  border: 1.5px solid #7a9e3f;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.spec-tag {
+  font-size: 0.72rem;
+  color: #aed581;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.spec-title {
+  margin: 2px 0 4px 0;
+  color: #ffffff;
+  font-size: 1.05rem;
+}
+
+.spec-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.current-built-tag {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.spec-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.checklist-item.passed {
+  border-color: #4caf50;
+  background: rgba(76, 175, 80, 0.15);
+  color: #c8e6c9;
+}
+
+.chk-status {
+  margin-left: auto;
+  font-weight: 800;
+  font-size: 0.75rem;
+}
+
+.spec-bottom-bar {
+  padding: 12px 18px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(20, 26, 45, 0.75);
+}
+
+.spec-hint-text {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.88rem;
+}
+
+.specimen-dossier {
+  background: rgba(15, 23, 42, 0.8);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dossier-title {
+  margin: 0 0 6px 0;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+
+.dossier-field {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.field-guide-stamp-card {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(47, 62, 44, 0.6);
+  border: 1.5px dashed #7a9e3f;
+  border-radius: 10px;
+}
+
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chk-label-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: #f1f5f9;
+  cursor: pointer;
+}
+
+.species-select-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.species-option-btn {
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.species-option-btn:hover {
+  border-color: var(--gold);
+}
+
+.species-option-btn.active {
+  background: rgba(201, 162, 39, 0.25);
+  border-color: #ffd54f;
+  color: #ffe082;
+}
+
+.tree-branch-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-align: left;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tree-branch-btn:hover {
+  border-color: #7a9e3f;
+  background: rgba(122, 158, 63, 0.2);
+}
+
+.plaque-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+.plaque-tag {
+  font-size: 0.75rem;
+  color: var(--gold-light);
+  font-weight: 800;
+}
+
+.plaque-species {
+  margin: 2px 0;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.plaque-officer {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.plaque-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.plaque-line-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1.5px solid transparent;
+  color: #f1f5f9;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.plaque-line-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.plaque-line-item.selected {
+  background: rgba(217, 93, 57, 0.2);
+  border-color: #d95d39;
+  color: #ffccbc;
+}
+
+.detective-prompt-box {
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+.fix-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.fix-option-btn {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+  text-align: left;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fix-option-btn:hover {
+  border-color: #3f8f8f;
+  background: rgba(63, 143, 143, 0.2);
+}
+
+.fix-option-btn.active {
+  background: rgba(63, 143, 143, 0.3);
+  border-color: #4dd0e1;
+  color: #e0f7fa;
+}
+
+.station-error-pill {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(239, 83, 80, 0.2);
+  border: 1px solid #ef5350;
+  color: #ffcdd2;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.station-success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(76, 175, 80, 0.2);
+  border: 1.5px solid #4caf50;
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.station-success .success-icon {
+  font-size: 1.8rem;
+}
+
+.station-success .success-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #e8f5e9;
+  line-height: 1.4;
+}
+

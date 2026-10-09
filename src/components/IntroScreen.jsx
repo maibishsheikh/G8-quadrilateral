@@ -5,11 +5,11 @@ import { generateSessionQuestions } from '../utils/shuffle.js';
 import questionBank from '../data/questionBank.js';
 
 const JOURNEY = [
-  { num: '01', icon: '🔍', label: 'Wonder',   desc: 'Spark your curiosity' },
-  { num: '02', icon: '📖', label: 'Story',    desc: 'Oliver & Emma\'s market' },
-  { num: '03', icon: '🧪', label: 'Simulate', desc: '4 interactive labs' },
-  { num: '04', icon: '🎮', label: 'Practice', desc: '10 worlds & bosses' },
-  { num: '05', icon: '📓', label: 'Reflect',  desc: 'Review & scorecard' },
+  { num: '01', icon: '🔍', label: 'Wonder',   desc: 'The enclosure mystery' },
+  { num: '02', icon: '📖', label: 'Story',    desc: 'Hui Min & Sanjay\'s guide' },
+  { num: '03', icon: '🧪', label: 'Simulate', desc: '4 interactive ranger labs' },
+  { num: '04', icon: '🎮', label: 'Practice', desc: '10 savanna worlds & bosses' },
+  { num: '05', icon: '📓', label: 'Reflect',  desc: 'Debrief & scorecard' },
 ];
 
 export default function IntroScreen({ state, dispatch }) {
@@ -28,26 +28,26 @@ export default function IntroScreen({ state, dispatch }) {
     <div className="intro-wrap">
       {/* Top Badge */}
       <div className="intro-top-badge">
-        ✨ Curriculum · Money, Coins, Notes &amp; Change Grade 2–5
+        ✨ Grade 8 Geometry · The Savanna Ranger Academy
       </div>
 
       {/* Main Title */}
       <h1 className="intro-title">
-        <span className="text-orange">Money</span> <span className="text-white">Quest</span>
+        <span className="text-orange">Quad</span><span className="text-white">Quest</span>
       </h1>
-      <h2 className="intro-subtitle">MoneyQuest · Master Coins, Notes, Prices &amp; Making Change</h2>
+      <h2 className="intro-subtitle">QuadQuest · Master Sides, Angles, Diagonals &amp; Inclusions</h2>
 
       {/* Mascot Row */}
       <div className="intro-mascot-row">
-        <div className="intro-mascot-circle">🐷</div>
+        <div className="intro-mascot-circle">🦒</div>
         <div className="intro-speech-bubble">
-          Hi! I'm Penny. Ready to explore the market,<br />count coins, and make exact change? 🪙💵
+          Hi! I'm Gigi the Giraffe. Ready to stop naming shapes by how they LOOK<br />and start proving them by what can be SHOWN? 🦒📏📐
         </div>
       </div>
 
       {/* Description */}
       <p className="intro-desc">
-        Learn how to recognise coins &amp; notes, add prices, convert between cents &amp; dollars, and calculate change like a pro shopkeeper!
+        Explore the six special quadrilaterals (trapezium, parallelogram, rectangle, rhombus, square, kite), find missing angles with proven reasons, solve algebraic side equations, and climb the family tree of inclusion!
       </p>
 
       {/* Journey Card */}
@@ -99,32 +99,22 @@ export default function IntroScreen({ state, dispatch }) {
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="intro-ctas">
-        <button className="btn btn-primary btn-lg intro-cta-main" onClick={startFresh}>
-          🚀 Begin Your Journey!
-        </button>
-        {hasSaved && (
-          <button className="btn btn-outline" onClick={resumeSession} style={{ marginTop: '10px' }}>
-            ↩ Resume Session
+      {/* Action Buttons */}
+      <div className="intro-btn-row">
+        {hasSaved ? (
+          <>
+            <button className="btn btn-outline btn-lg" onClick={startFresh} aria-label="Start fresh session">
+              Restart Journey 🔄
+            </button>
+            <button className="btn btn-primary btn-lg pulse-glow" onClick={resumeSession} aria-label="Resume existing session">
+              Resume Journey ➔
+            </button>
+          </>
+        ) : (
+          <button className="btn btn-primary btn-lg pulse-glow" onClick={startFresh} aria-label="Begin learning journey">
+            Begin QuadQuest Journey 🚀
           </button>
         )}
-      </div>
-
-      {/* Bottom Cards */}
-      <div className="intro-bottom-cards">
-        <div className="bottom-card">
-          <div className="bottom-card-icon" style={{ color: '#ff6b6b' }}>🎯</div>
-          <div>100 Questions</div>
-        </div>
-        <div className="bottom-card">
-          <div className="bottom-card-icon" style={{ color: '#feca57' }}>🪙</div>
-          <div>Coins &amp; Notes</div>
-        </div>
-        <div className="bottom-card">
-          <div className="bottom-card-icon" style={{ color: '#66bb6a' }}>✨</div>
-          <div>Badges &amp; XP</div>
-        </div>
       </div>
     </div>
   );
