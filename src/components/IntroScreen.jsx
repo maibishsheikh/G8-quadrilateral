@@ -3,6 +3,7 @@ import React from 'react';
 import './IntroScreen.css';
 import { generateSessionQuestions } from '../utils/shuffle.js';
 import questionBank from '../data/questionBank.js';
+import gigiImg from '../assets/gigi.png';
 
 const JOURNEY = [
   { num: '01', icon: '🔍', label: 'Wonder',   desc: 'The mystery' },
@@ -39,7 +40,9 @@ export default function IntroScreen({ state, dispatch }) {
 
       {/* Mascot & Mission Hero Card */}
       <div className="intro-mascot-card">
-        <div className="intro-mascot-circle">🦒</div>
+        <div className="intro-mascot-circle">
+          <img src={gigiImg} alt="Gigi the Ranger Giraffe" className="intro-mascot-img" />
+        </div>
         <div className="intro-speech-content">
           <p className="speech-quote">
             "Stop naming shapes by how they LOOK — start proving them by what can be SHOWN!"

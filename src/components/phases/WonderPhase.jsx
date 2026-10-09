@@ -4,6 +4,7 @@ import './WonderPhase.css';
 import Mascot from '../shared/Mascot.jsx';
 import { useAudio } from '../../hooks/useAudio.js';
 import { wonderNarration } from '../../utils/narration.js';
+import wonderImg from '../../assets/wonder.png';
 
 const PARTICLES = ['🦒', '📐', '📏', '🔷', '🟩', '🦏', '✨', '🌿', '🪵', '🧭'];
 
@@ -45,7 +46,9 @@ export default function WonderPhase({ state, dispatch }) {
       <div className="wonder-content anim-slide-up">
         {/* Main hook card */}
         <div className="wonder-card glass-card">
-          <div className="wonder-stadium-icon" aria-hidden="true">🦒</div>
+          <div className="wonder-hero-img-wrap">
+            <img src={wonderImg} alt="The Savanna Enclosure Mystery" className="wonder-hero-img" />
+          </div>
           <h1 className="wonder-title headline">The Savanna Enclosure Mystery!</h1>
 
           <div className="wonder-number-display">

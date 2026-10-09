@@ -4,6 +4,8 @@ import './BossBattleModal.css';
 import QuestionRenderer from './QuestionRenderer.jsx';
 import { useAudio } from '../../hooks/useAudio.js';
 import { bossStartNarration, bossWinNarration } from '../../utils/narration.js';
+import bossRhinoImg from '../../assets/boss_rhino.png';
+import chiefBadgeImg from '../../assets/chief_badge.png';
 
 export default function BossBattleModal({ boss, questions, onWin, onClose, audioEnabled }) {
   const { narrate, sounds } = useAudio(audioEnabled);
@@ -47,7 +49,11 @@ export default function BossBattleModal({ boss, questions, onWin, onClose, audio
       <div className="boss-modal-backdrop">
         <div className="boss-modal-card glass-card anim-bounce-in">
           <div className="boss-avatar-pulse">
-            <span className="boss-emoji">{boss.emoji}</span>
+            {boss.emoji === '🦏' || !boss.emoji ? (
+              <img src={bossRhinoImg} alt={boss.name} className="boss-avatar-img" />
+            ) : (
+              <span className="boss-emoji">{boss.emoji}</span>
+            )}
           </div>
           <h2 className="boss-title">{boss.name}</h2>
           <p className="boss-desc">
@@ -76,8 +82,8 @@ export default function BossBattleModal({ boss, questions, onWin, onClose, audio
     return (
       <div className="boss-modal-backdrop">
         <div className="boss-modal-card glass-card anim-celebrate">
-          <div className="boss-avatar-pulse" style={{ background: 'rgba(76, 175, 80, 0.4)' }}>
-            <span className="boss-emoji">🏆</span>
+          <div className="boss-avatar-pulse victory-badge-pulse" style={{ background: 'rgba(76, 175, 80, 0.4)' }}>
+            <img src={chiefBadgeImg} alt="Savanna Chief Ranger Badge" className="boss-badge-img" />
           </div>
           <h2 className="boss-title" style={{ color: 'var(--green-light)' }}>Boss Defeated!</h2>
           <p className="boss-desc">
@@ -100,7 +106,7 @@ export default function BossBattleModal({ boss, questions, onWin, onClose, audio
           </div>
           <h2 className="boss-title" style={{ color: 'var(--red-light)' }}>Out of Lives!</h2>
           <p className="boss-desc">
-            {boss.name} was too tricky! Review the coin rules and challenge the boss again.
+            {boss.name} was too tricky! Review quadrilateral properties and challenge the boss again.
           </p>
           <button className="btn btn-primary" onClick={onClose}>
             Return to Practice

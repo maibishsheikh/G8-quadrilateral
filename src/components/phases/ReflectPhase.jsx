@@ -8,6 +8,7 @@ import { useAudio } from '../../hooks/useAudio.js';
 import { reflectNarration, reflectCompleteNarration } from '../../utils/narration.js';
 import { generateSessionQuestions } from '../../utils/shuffle.js';
 import questionBank from '../../data/questionBank.js';
+import chiefBadgeImg from '../../assets/chief_badge.png';
 
 const REFLECT_QUESTIONS = [
   {
@@ -85,7 +86,9 @@ export default function ReflectPhase({ state, dispatch }) {
     return (
       <div className="reflect-wrap">
         <div className="trophy-card glass-card anim-bounce-in">
-          <div className="trophy-icon">🏆</div>
+          <div className="trophy-medal-wrap">
+            <img src={chiefBadgeImg} alt="Savanna Chief Ranger Medal" className="trophy-medal-img" />
+          </div>
           <h1 className="trophy-title headline">You're a Savanna Chief Ranger!</h1>
           <p className="trophy-sub subheadline" style={{ color: 'var(--gold)' }}>
             Quadrilaterals &amp; Geometric Reasoning Mastery Complete ✅
